@@ -17,7 +17,8 @@
 namespace sxc {
 
 	enum class IPPROTO {
-		IP = 0,
+		NONE = 0,
+		IP,
 		TCP,
 		UDP, 
 		/* 
@@ -33,10 +34,16 @@ namespace sxc {
 	// Socket Descriptor Type 
 	using sd_t =
 #ifdef VS
-		SOCKET; // = uint64_t 
+	SOCKET; // = uint64_t 
 #else
 
 #endif 
+	constexpr sd_t kInvalidSocket =
+#ifdef VS
+	INVALID_SOCKET; // = ~0 uint64 (-1, int)
+#else
+
+#endif
 
 		// Socket Address
 	using saddr_t =
@@ -48,13 +55,17 @@ namespace sxc {
 	class Socket
 	{
 	public:
-		static void Startup();
-		static void Cleanup();
+		static int startup();
+		static int cleanup();
 
-		Socket() = delete;
-		Socket(sd_t sd = 0) : mSd(sd) {};
-		Socket(IPPROTO ip_protocol);
-		~Socket();
+		Socket() = default;
+		Socket(const Socket& ref) = default;
+		Socket(IPPROTO ip_protocol) { newSocket(ip_protocol); };
+		~Socket() { _close(); };
+
+		int		newSocket(IPPROTO ip_protocol);
+		int		newTCPSocket();	
+		int		newUDPSocket(); 
 
 		int		_bind(const saddr_t& addr);
 		int		_listen(int backlog);
@@ -68,12 +79,14 @@ namespace sxc {
 		int		_shutdown(int how);
 
 		sd_t	getSockDesc()	const { return mSd; }
-		bool	isValidSocket() const { return mSd > 0; }
+		bool	isValidSocket() const { return mSd != kInvalidSocket; }
+		IPPROTO getIPProtocol() const { return mIPProtocol; }
 		bool	hasBound()		const { return mHasBound; }
 
 	private:
-		sd_t	mSd;
-		bool	mHasBound;
+		sd_t	mSd			= 0;
+		IPPROTO mIPProtocol = IPPROTO::NONE;
+		bool	mHasBound	= false;
 
 #ifdef VS
 		static WSADATA mWsaData;

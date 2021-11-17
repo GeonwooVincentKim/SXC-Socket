@@ -2,24 +2,50 @@
 
 namespace sxc {
 
-	void Socket::Startup()
+	int Socket::startup()
 	{
 #ifdef VS
-		auto ret = WSAStartup(MAKEWORD(2, 2), &mWsaData);
-		if (ret != 0) throw std::runtime_error("WSA 2.2 Startup Failed");
+		return WSAStartup(MAKEWORD(2, 2), &mWsaData);
 #endif 
 	}
 
-	void Socket::Cleanup()
+	int Socket::cleanup()
 	{
+#ifdef VS
+		return WSACleanup();
+#endif 
 	}
 
-	Socket::Socket(IPPROTO ip_protocol)
-	{
+
+	int Socket::newSocket(IPPROTO ip_protocol) {
+		if (ip_protocol == IPPROTO::TCP) {
+			return newTCPSocket();
+		}
+		if (ip_protocol == IPPROTO::UDP) {
+			return newUDPSocket();
+		}
 	}
 
-	Socket::~Socket()
-	{
+	int	Socket::newTCPSocket() {
+#ifdef VS
+		mSd = socket(PF_INET, SOCK_STREAM, IPPROTO_TCP);
+#endif 
+
+		if (mSd != kInvalidSocket) {
+			mIPProtocol = IPPROTO::TCP;
+		}
+		return mSd;
+	}
+
+	int	Socket::newUDPSocket() {
+#ifdef VS
+		mSd = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
+#endif 
+
+		if (mSd != kInvalidSocket) {
+			mIPProtocol = IPPROTO::UDP;
+		}
+		return mSd;
 	}
 
 	int Socket::_bind(const saddr_t& addr)
@@ -54,12 +80,20 @@ namespace sxc {
 
 	int Socket::_close()
 	{
-		return 0;
+		mIPProtocol = IPPROTO::NONE;
+		if (mSd == kInvalidSocket) return 0;
+#ifdef VS
+		return closesocket(mSd);
+#endif 
 	}
 
 	int Socket::_shutdown(int how)
 	{
-		return 0;
+		mIPProtocol = IPPROTO::NONE;
+		if (mSd == kInvalidSocket) return 0;
+#ifdef VS
+		return shutdown(mSd, how);
+#endif 
 	}
 
 }

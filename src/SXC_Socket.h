@@ -1,6 +1,7 @@
 #pragma once
 
 #include<iostream>
+#include<exception>
 
 #include "platform_info.h"
 
@@ -55,28 +56,27 @@ namespace sxc {
 		Socket(IPPROTO ip_protocol);
 		~Socket();
 
-		int _bind(const saddr_t& addr);
-		int _listen(int backlog);
-		int _connect(const saddr_t& addr);
-		Socket _accept(saddr_t& addr);
+		int		_bind(const saddr_t& addr);
+		int		_listen(int backlog);
+		int		_connect(const saddr_t& addr);
+		Socket	_accept(saddr_t& addr);
 		
-		int _send(const Socket& sock, std::string_view buf, int flags = 0);
-		int _send(const Socket& sock, const char* buf, int len, int flags = 0);
+		int		_send(const Socket& sock, const char* buf, int len, int flags = 0);
+		int		_recv(const Socket& sock, char* buf, int len, int flags);
 
-		int _recv(const Socket& sock, std::string& buf, int len, int flags = 0);
-		int _recv(const Socket& sock, char* buf, int len, int flags);
+		int		_close();
+		int		_shutdown(int how);
 
-		int _shutdown(int how);
-
-		sd_t getSockDesc() const { return mSd; }
-		bool hasBound() const { return mHasBound; }
+		sd_t	getSockDesc()	const { return mSd; }
+		bool	isValidSocket() const { return mSd > 0; }
+		bool	hasBound()		const { return mHasBound; }
 
 	private:
-		sd_t mSd;
-		bool mHasBound;
+		sd_t	mSd;
+		bool	mHasBound;
 
 #ifdef VS
-		WSADATA mWsaData;
+		static WSADATA mWsaData;
 #endif 
 	};
 

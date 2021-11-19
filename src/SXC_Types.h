@@ -6,7 +6,7 @@ namespace sxc {
 	template<typename... Types>
 	using _pkg = std::tuple<Types...>;
 
-	template<typename... Args>
-	constexpr auto _pack(Args...) { return std::make_tuple(Args...); }
+	template<typename... Types>
+	constexpr auto _pack(Types&&... Args) { return std::make_tuple(Args...); }
 
 }

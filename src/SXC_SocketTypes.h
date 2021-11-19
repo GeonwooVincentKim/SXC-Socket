@@ -13,15 +13,16 @@
 namespace sxc {
 
 	namespace ip {
-		enum class VER { _4, _6 };
+		enum class VER {
+			_4,
+			_6
+		};
 
 		enum class PROTO {
 			NONE = 0,
 			TCP,
 			UDP
 		};
-
-
 	}
 
 #ifdef VS
@@ -29,20 +30,8 @@ namespace sxc {
 	using sockaddr_t = SOCKADDR_IN; // Socket Address
 #else
 	using sock_t = int; // Socket Descriptor 
-	using sockaddr_t = SOCKADDR_IN; // Socket Address
-
+	using sockaddr_t = struct sockaddr_in; // Socket Address
+	constexpr sock_t INVALID_SOCKET = -1;
 #endif 
-		// Invalid Socket
-		constexpr sock_t INV_SOCKET =
-#ifdef VS
-		INVALID_SOCKET; // = ~0 uint64 (-1, int)
-#else
 
-#endif
-		
-		using saddr_t =
-#ifdef VS
-		SOCKADDR_IN;
-#else 
-
-#endif 
+}

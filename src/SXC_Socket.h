@@ -3,48 +3,42 @@
 #include<iostream>
 #include<exception>
 
-#include "platform_info.h"
+#include "env_info.h"
 
 #ifdef VS
 #include<Windows.h>
 #include<WinSock2.h>
 #pragma comment(lib, "ws2_32.lib")
-
-
-
 #endif 
 
 namespace sxc {
 
-	enum class IPPROTO {
-		NONE = 0,
-		IP,
-		TCP,
-		UDP, 
-		/* 
-		ICMP,
-		IGMP,
-		GGP,
-		PUP,
-		IDP,
-		ND
-		*/
-	};
+	namespace ip {
+		enum class VER { _4, _6	};
+
+		enum class PROTO {
+			NONE = 0,
+			TCP,
+			UDP
+		};
+
+
+	}
 
 	// Socket Descriptor Type 
-	using sd_t =
+	using sock_t =
 #ifdef VS
 	SOCKET; // = uint64_t 
 #else
 
 #endif 
-	constexpr sd_t kInvalidSocket =
+	// Invalid Socket
+	constexpr sock_t INV_SOCKET =
 #ifdef VS
 	INVALID_SOCKET; // = ~0 uint64 (-1, int)
 #else
 
 #endif
-
 		// Socket Address
 	using saddr_t =
 #ifdef VS

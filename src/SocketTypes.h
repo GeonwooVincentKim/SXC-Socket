@@ -8,7 +8,11 @@
 #include<WinSock2.h>
 #include<WS2tcpip.h>
 #pragma comment(lib, "ws2_32.lib")
-#else
+#elif LINUX
+#include <unistd.h>
+#include <arpa/inet.h>
+#include <sys/socket.h>
+#else 
 
 #endif 
 
@@ -34,7 +38,7 @@ namespace sxc {
 	using sock_t = int; // Socket Descriptor 
 	using sockaddr_t = struct sockaddr_in; // Socket Address
 	using SOCKADDR = struct sockaddr;
-	constexpr sock_t INVALID_SOCKET = -1;
+#define INVALID_SOCKET = -1;
 #endif 
 
 }

@@ -1,9 +1,8 @@
 #pragma once
-#include "env_info.h"
-#include "SXC_Types.h"
-#include "SXC_SocketTypes.h"
-#include<iostream>
-#include<exception>
+#include "SXCBasic.h"
+#include "SocketTypes.h"
+#include <iostream>
+#include <exception>
 
 namespace sxc {
 

@@ -1,4 +1,4 @@
-#include "SXC_Socket.h"
+#include "Socket.h"
 
 namespace sxc {
 
@@ -67,8 +67,10 @@ namespace sxc {
 	{
 #if VS && WINDOWS
 		return send(mSock, buf, len, flags);
-#else
-
+#elif LINUX
+		return write(mSock, buf, len, flags);
+#else 
+		
 #endif 
 	}
 
@@ -76,7 +78,9 @@ namespace sxc {
 	{
 #if VS && WINDOWS
 		return recv(mSock, buf, len, flags);
-#else
+#elif LINUX
+		return read(mSock, buf, len, flags);
+#else 
 
 #endif 
 	}
@@ -85,7 +89,9 @@ namespace sxc {
 	{
 #if VS && WINDOWS
 		return closesocket(mSock);
-#else
+#elif LINUX
+		return close(mSock);
+#else 
 
 #endif 
 		return 0;

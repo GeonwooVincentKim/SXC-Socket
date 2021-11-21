@@ -1,5 +1,5 @@
-#include "SXC_Socket.h"
-#include "SXC_SocketAddr.h"
+#include "Socket.h"
+#include "SocketAddr.h"
 
 int main() {
 	sxc::SAstartup();

@@ -1,4 +1,4 @@
-#include "SXC_SocketAddr.h"
+#include "SocketAddr.h"
 
 namespace sxc {
 	void SocketAddr::setup(std::string_view ip, uint16_t port, int af) {

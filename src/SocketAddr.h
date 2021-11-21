@@ -4,6 +4,7 @@
 #include "SocketTypes.h"
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <cstdint>
 
 namespace sxc {

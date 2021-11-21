@@ -58,8 +58,13 @@ namespace sxc {
 	_pkg<sock_t, sockaddr_t> Socket::_accept()
 	{
 		sockaddr_t addr;
+#if VS && WINDOWS
 		int addrLen = sizeof(addr);
 		sock_t sock = accept(mSock, (SOCKADDR*)&addr, &addrLen);
+#elif LINUX
+		socklen_t addrLen = sizeof(addr);
+		sock_t sock = accept(mSock, (SOCKADDR*)&addr, &addrLen);
+#endif 
 		return _pack(sock, addr);
 	}
 
@@ -68,7 +73,7 @@ namespace sxc {
 #if VS && WINDOWS
 		return send(mSock, buf, len, flags);
 #elif LINUX
-		return write(mSock, buf, len, flags);
+		return write(mSock, buf, len);
 #else 
 		
 #endif 
@@ -79,7 +84,7 @@ namespace sxc {
 #if VS && WINDOWS
 		return recv(mSock, buf, len, flags);
 #elif LINUX
-		return read(mSock, buf, len, flags);
+		return read(mSock, buf, len);
 #else 
 
 #endif 

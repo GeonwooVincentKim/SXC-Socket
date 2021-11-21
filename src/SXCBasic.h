@@ -34,6 +34,7 @@
 #endif 
 
 #include<tuple>
+#include<functional>
 
 namespace sxc {
 

@@ -33,7 +33,7 @@ namespace sxc {
 		int		_close();
 		int		_shutdown(int how);
 
-		bool	isValid() const { return mSock != INVALID_SOCKET && mSock > sock_t(0); }
+		bool	isValid() const { return (mSock != INVALID_SOCKET) && (mSock > sock_t(0)); }
 		sock_t	getSocket()	const { return mSock; }
 
 	private:

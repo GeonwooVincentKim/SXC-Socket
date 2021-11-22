@@ -11,6 +11,10 @@ int main() {
 		std::cerr << "Create TCP Socket Failed" << std::endl;
 	}
 
+	if (int value = 1; ServSock._setOpt(SOL_SOCKET, SO_REUSEADDR, (void*)&value, sizeof(value)) < 0) {
+		std::cerr << "Set Socket Option Failed" << std::endl;
+	}
+
 	if (ServSock._bind(ServAddr.getCRef()) != 0) {
 		std::cerr << "Bind Address Failed" << std::endl;
 	}

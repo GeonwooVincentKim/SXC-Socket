@@ -39,7 +39,7 @@ namespace sxc {
 #if VS && WINDOWS
 		return setsockopt(mSock, level, optname, reinterpret_cast<const char*>(optval), optlen);
 #elif LINUX
-		return setsockopt(mSock, level, optname, optval, &optlen);
+		return setsockopt(mSock, level, optname, optval, optlen);
 #endif
 	}
 

@@ -35,6 +35,22 @@ namespace sxc {
 		return mSock = socket(PF_INET, SOCK_DGRAM, IPPROTO_UDP);
 	}
 
+	int	Socket::_setOpt(int level, int optname, const void* optval, socklen_t optlen) {
+#if VS && WINDOWS
+		return setsockopt(mSock, level, optname, reinterpret_cast<const char*>(optval), optlen);
+#elif LINUX
+		return setsockopt(mSock, level, optname, optval, &optlen);
+#endif
+	}
+
+	int	Socket::_getOpt(int level, int optname, void* optval, socklen_t optlen) {
+#if VS && WINDOWS
+		return getsockopt(mSock, level, optname, reinterpret_cast<char*>(optval), (int*)&optlen);
+#elif LINUX
+		return getsockopt(mSock, level, optname, optval, &optlen);
+#endif 
+	}
+
 	int Socket::_bind(const sockaddr_t& addr)
 	{
 		return bind(mSock, (SOCKADDR*)&addr, sizeof(addr));

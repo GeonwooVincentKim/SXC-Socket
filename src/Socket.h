@@ -20,6 +20,12 @@ namespace sxc {
 		sock_t	_newTCP();	
 		sock_t	_newUDP(); 
 
+		/*
+		https://docs.microsoft.com/ko-kr/windows/win32/api/winsock/nf-winsock-getsockopt?redirectedfrom=MSDN
+		*/
+		int		_setOpt(int level, int optname, const void* optval, socklen_t optlen);
+		int		_getOpt(int level, int optname, void* optval, socklen_t optlen);
+
 		int		_bind(const sockaddr_t& addr);
 		int		_listen(int backlog);
 		int		_select();
